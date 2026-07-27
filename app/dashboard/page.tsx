@@ -10,7 +10,6 @@ import {
   MaterialLogRow,
   LabourLogRow,
   MuckAwayLogRow,
-  JobFinancialSummary,
 } from '@/components/dashboard/types';
 
 import ClientsManager from '@/components/dashboard/ClientsManager';
@@ -19,6 +18,21 @@ import PlantLogsManager from '@/components/dashboard/PlantLogsManager';
 import MaterialLogsManager from '@/components/dashboard/MaterialLogsManager';
 import LabourLogsManager from '@/components/dashboard/LabourLogsManager';
 import MuckAwayLogsManager from '@/components/dashboard/MuckAwayLogsManager';
+
+export interface DashboardJobSummary {
+  job_id: string;
+  site_name: string;
+  client_name: string;
+  quoted_price: number;
+  plant_cost: number;
+  material_cost: number;
+  labour_cost: number;
+  muck_cost: number;
+  total_cost: number;
+  profit: number;
+  margin_pct: number;
+  status: string;
+}
 
 function DashboardContent() {
   const [activeTab, setActiveTab] = useState<'overview' | 'jobs' | 'clients' | 'plant' | 'materials' | 'labour' | 'muck'>('overview');
@@ -35,7 +49,7 @@ function DashboardContent() {
   const [muckAwayLogs, setMuckAwayLogs] = useState<MuckAwayLogRow[]>([]);
 
   // Live financial summaries
-  const [jobSummaries, setJobSummaries] = useState<JobFinancialSummary[]>([]);
+  const [jobSummaries, setJobSummaries] = useState<DashboardJobSummary[]>([]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -87,8 +101,8 @@ function DashboardContent() {
       clientMap.set(c.id, c.name || c.company_name || 'Unknown Client');
     });
 
-    const summaries: JobFinancialSummary[] = jobsList.map((job) => {
-      const jId = job.id;
+    const summaries: DashboardJobSummary[] = jobsList.map((job) => {
+      const jId = String(job.id || '');
       const quoted = Number(job.quoted_price || job.contract_value || job.quote_amount || 0);
 
       const plantCost = plantList
