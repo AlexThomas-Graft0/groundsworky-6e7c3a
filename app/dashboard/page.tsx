@@ -329,7 +329,7 @@ function DashboardContent() {
           </div>
         )}
 
-        {activeTab === 'jobs' && <JobsManager jobs={jobs} clients={clients} onRefresh={fetchData} />}
+        {activeTab === 'jobs' && <JobsManager jobs={jobs} clients={clients} summaries={jobSummaries} onRefresh={fetchData} />}
         {activeTab === 'clients' && <ClientsManager clients={clients} onRefresh={fetchData} />}
         {activeTab === 'plant' && <PlantLogsManager plantLogs={plantLogs} jobs={jobs} onRefresh={fetchData} />}
         {activeTab === 'materials' && <MaterialLogsManager materialLogs={materialLogs} jobs={jobs} onRefresh={fetchData} />}
